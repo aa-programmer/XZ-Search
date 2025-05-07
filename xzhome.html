@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XZ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="xzlogo.png">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">XZ</h1>
+        <h3 class="subtitle title-look m-up1">Search</h3>
+        <div class="search-box">
+            <input type="text" id="input" placeholder="Enter your text here...">
+        </div>
+        <div class="results">
+            <!-- Search results will be displayed here -->
+        </div>
+    </div>
+    <footer class="footer">
+        <p>© 2025 XZ. All rights reserved.</p>
+        <br>
+        <p><button onclick="hide()" style="color:white;background-color:black;border:none;cursor:pointer;">X</button><a href="privacy.html">Privacy</a> | <a href="terms.html">Terms of Service</a> | <a href="xzhome.html">Home</a></p>
+    </footer>
+    <script>
+        const input = document.getElementById('input');
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                console.log('Searching for:', input.value);
+                // Later: window.location.href = '/search?q=' + encodeURIComponent(input.value);
+            }
+        });
+    </script>  
+    <script>
+        async function fetchResults(query) {
+    try {
+        const response = await fetch(`http://127.0.0.1:5000/search?q=${query}`);
+
+        
+        // Check if the response is successful (status code 200)
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json(); // This should work if the response is JSON
+        const resultsContainer = document.querySelector('.results');
+        
+        resultsContainer.innerHTML = '';  // Clear any previous results
+
+        if (data.error) {
+            resultsContainer.innerHTML = `<p>${data.error}</p>`;
+            return;
+        }
+
+        data.results.forEach(result => {
+            const resultElement = document.createElement('div');
+            resultElement.classList.add('result');
+            resultElement.innerHTML = `
+                <h3>${result.title}</h3>
+                <p>${result.description}</p>
+                <a href="${result.url}">${result.url}</a>
+            `;
+            resultsContainer.appendChild(resultElement);
+        });
+    } catch (error) {
+        console.error('Error during fetch:', error);
+        const resultsContainer = document.querySelector('.results');
+        resultsContainer.innerHTML = `<p>Sorry, something went wrong.</p>`;
+    }
+}
+
+
+        searchInput = document.getElementById('input');
+        searchInput.addEventListener('input', (event) => {
+            const query = event.target.value;
+            if (query) {
+                fetchResults(query);
+            } else {
+                document.querySelector('.results').innerHTML = '';
+            }
+        });
+    </script>  
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    function hide() {
+        const footer = document.querySelector('.footer');
+        footer.style.display = 'none';
+    }
+
+    // You can call this function somewhere when the button is clicked
+    const hideButton = document.querySelector('button');
+    hideButton.addEventListener('click', hide);
+});
+
+    </script>
+</body>
+</html>
