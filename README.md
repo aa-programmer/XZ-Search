@@ -1,2 +1,5 @@
 # XZ-Search
-XZ is an Search Engine I made for no reason, it has about 250k URLs in its database
+## installation
+1. Run (installation.bat)[installation.bat]
+2. After that run 'python app.py'
+3. Now you can just open the (xzhome.html)[xzhome.html] file thats in C:\XZ-Search\
